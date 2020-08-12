@@ -80,6 +80,10 @@ nombre_items=['lista_ventilador','lista_limpieza','lista_camas','lista_desfibril
              'camisolines','n95','tricapa','termometro','ecmo','tubo_oxigeno','tensiometro','aspirador_manual','resucitador_manual','ecografo',
              'humidificadores','monitor_multiparametrico']
 
+# Load csv contracs_item_provider_limpio
+path=''
+contracs_item_provider_limpio=pd.read_csv(path)
+
 # Fill dic "diccionario_proveedores_procesos": Item, num of before emergency providers, num of emergency providers, related to process number
 for i,j in zip(lista_items, nombre_items):
     
