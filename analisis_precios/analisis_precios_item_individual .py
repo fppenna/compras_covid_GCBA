@@ -166,7 +166,7 @@ contracs_items_pre_emergencia = contracs_items[(contracs_items['contracts/0/date
 contracs_items_emergencia = contracs_items[(contracs_items['contracts/0/dateSigned'] >= '2020-03-01')].reset_index(
     drop=True)
 
-# Filtering CDE ds with "nombre_item"
+# Filtering CDE ds using "item"
 contratacion_directa_emergencia = contratacion_directa_emergencia[
     (contratacion_directa_emergencia['item'] == '')].reset_index(drop=True)
 
