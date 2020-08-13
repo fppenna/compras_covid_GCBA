@@ -61,4 +61,4 @@ output_path_contratacion_directa_emergencia = ''
 output_path_contracs_items = ''
 
 contracs_items.to_csv(output_path_contracs_items, index=False, sep=',', encoding='utf-8')
-contratacion_directa_emergencia.to_csv(contratacion_directa_emergencia, index=False, sep=',', encoding='utf-8')
+contratacion_directa_emergencia.to_csv(output_path_contratacion_directa_emergencia, index=False, sep=',', encoding='utf-8')
