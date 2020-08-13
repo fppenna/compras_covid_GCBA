@@ -19,3 +19,15 @@ Contiene los datos de los documentos contractuales gestionados vía sistema BAC 
 
 ### gcba_contracts_jul
 Contiene los datos de los documentos contractuales con el detalle de los ítems adquiridos en cada uno de ellos, gestionados vía sistema BAC por parte del GCBA. Se encuentran publicados en data.buenosaires.gob.ar
+
+### gcba_releases_documents_items
+Contiene los datos de los procesos contractuales con el detalle de los ítems que pretende adquirir cada uno de ellos, gestionados vía sistema BAC por parte del GCBA. Se encuentran publicados en data.buenosaires.gob.ar
+
+### contracs_items_provider
+Contiene los datos de los documentos contractuales con el detalle de los ítems adquiridos y los proveedores vinculados a cada uno de ellos, gestionados vía sistema BAC por parte del GCBA. Se encuentran publicados en data.buenosaires.gob.ar
+
+### items_analisis_precios
+Contiene los datos de los precios unitarios acordados por los ítems seleccionados para el análisis de precios.
+
+### tipo de cambio vendedor peso dolar
+Contiene el valor diario del tipo de cambio vendedor publicado por el Banco Central de la República Argentina en el período enero 2018- junio 2020.
