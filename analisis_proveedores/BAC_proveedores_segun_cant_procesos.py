@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import pandas as pd
 import numpy as np
 
-# Item lists: Each list contains sku codes (catalog codes) linked to each relevant item
+# Listas de items: Cada lista contiene los códigos del catálogo de bienes y servicios del GCBA asociados a los ítems relevantes para la investigación
 
 lista_ventilador=['33.01.002.0300.5','33.01.002.0300.9','33.01.002.0300.2','33.01.002.0300.1','33.01.002.0300.10', '33.01.002.0300.6','33.01.002.0300.13','33.01.002.0300.4','33.01.002.0300.3', '33.01.002.0300.12','33.01.002.0300.11','33.01.002.0300.8','33.01.002.0300.7','33.14.001.0002.15', '33.01.003.0056.4','33.01.003.0056.1','33.01.003.0056.3','33.01.003.0056.12','33.01.003.0056.15', '33.01.003.0056.13','33.01.003.0056.7','33.01.003.0056.2','33.01.003.0056.14','33.01.003.0056.8', '33.14.001.0002.84','33.01.003.0056.9','32.01.195.0007.1','33.14.001.0002.28']
 
@@ -65,11 +63,12 @@ humidificadores=['33.02.002.000.599','33.01.002.0113.16','33.01.003.0114.2','33.
 
 monitor_multiparametrico=['33.01.003.0049.1','33.01.003.0050.2','33.01.003.0106.1','33.01.003.0050.5','33.01.003.0050.3','33.01.003.0050.6', '33.01.003.0050.7','33.01.003.0050.1','33.14.001.0002.45','33.14.001.0002.44','33.01.003.0050.4','33.01.003.0049.2','33.14.001.0002.22', '33.14.001.0002.23']
 
-# Empty dic
+# Diccionario vacío
 diccionario_proveedores_procesos={'item':[],'%prov_proc_hist':[],'num_prov_hist':[],'num_procesos_hist':[],
                                   '%prov_proc_emer':[],'num_prov_emer':[],'num_procesos_emer':[]}
 
-# List of item lists
+# Lista que contiene las distintas listas de códigos del catálogo
+
 lista_items=[lista_ventilador,lista_limpieza,lista_camas,lista_desfibrilador,lista_carro_paro,oximetro,cofias,botas,
              alcohol_etilico,mascara_facial,mameluco,antiparras,bolsa_obito,hisopos,alcohol_gel,guantes_examinacion,
              camisolines,n95,tricapa,termometro,ecmo,tubo_oxigeno,tensiometro,aspirador_manual,resucitador_manual,ecografo,
@@ -80,11 +79,11 @@ nombre_items=['lista_ventilador','lista_limpieza','lista_camas','lista_desfibril
              'camisolines','n95','tricapa','termometro','ecmo','tubo_oxigeno','tensiometro','aspirador_manual','resucitador_manual','ecografo',
              'humidificadores','monitor_multiparametrico']
 
-# Load csv contracs_item_provider_limpio
+# Cargar csv contracs_item_provider_limpio
 path=''
 contracs_item_provider_limpio=pd.read_csv(path)
 
-# Fill dic "diccionario_proveedores_procesos": Item, num of before emergency providers, num of emergency providers, related to process number
+# Completar dic "diccionario_proveedores_procesos": Numero de item, cantidad de proveedores pre emergencia, cantidad de proveedores en emergencia, relativo a la cantidad de procesos
 for i,j in zip(lista_items, nombre_items):
     
     df_item=contracs_items_provider[contracs_items_provider['contracts/0/items/0/classification/id'].isin(i)]
