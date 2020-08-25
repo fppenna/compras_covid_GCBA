@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import pandas as pd
 import numpy as np
 
-# Item lists: Each list contains sku codes (catalog codes) linked to each relevant item
+# Listas de items: Cada lista contiene los códigos del catálogo de bienes y servicios del GCBA asociados a los ítems relevantes para la investigación
 
 lista_ventilador=['33.01.002.0300.5','33.01.002.0300.9','33.01.002.0300.2','33.01.002.0300.1','33.01.002.0300.10', '33.01.002.0300.6','33.01.002.0300.13','33.01.002.0300.4','33.01.002.0300.3', '33.01.002.0300.12','33.01.002.0300.11','33.01.002.0300.8','33.01.002.0300.7','33.14.001.0002.15', '33.01.003.0056.4','33.01.003.0056.1','33.01.003.0056.3','33.01.003.0056.12','33.01.003.0056.15', '33.01.003.0056.13','33.01.003.0056.7','33.01.003.0056.2','33.01.003.0056.14','33.01.003.0056.8', '33.14.001.0002.84','33.01.003.0056.9','32.01.195.0007.1','33.14.001.0002.28']
 
@@ -65,10 +62,10 @@ humidificadores=['33.02.002.000.599','33.01.002.0113.16','33.01.003.0114.2','33.
 
 monitor_multiparametrico=['33.01.003.0049.1','33.01.003.0050.2','33.01.003.0106.1','33.01.003.0050.5','33.01.003.0050.3','33.01.003.0050.6', '33.01.003.0050.7','33.01.003.0050.1','33.14.001.0002.45','33.14.001.0002.44','33.01.003.0050.4','33.01.003.0049.2','33.14.001.0002.22', '33.14.001.0002.23']
 
-# Empty dic
+# Diccionario vacío
 resultados={'item':[],'prov_historicos':[],'prov_posemergencia':[],'%posemergencia':[]}
 
-# List of item lists
+# Lista que contiene las distintas listas de códigos del catálogo
 lista_items=[lista_ventilador,lista_limpieza,lista_camas,lista_desfibrilador,lista_carro_paro,oximetro,cofias,botas,
              alcohol_etilico,mascara_facial,mameluco,antiparras,bolsa_obito,hisopos,alcohol_gel,guantes_examinacion,
              camisolines,n95,tricapa,termometro,ecmo,tubo_oxigeno,tensiometro,aspirador_manual,resucitador_manual,ecografo,
@@ -79,7 +76,7 @@ nombre_items=['lista_ventilador','lista_limpieza','lista_camas','lista_desfibril
              'camisolines','n95','tricapa','termometro','ecmo','tubo_oxigeno','tensiometro','aspirador_manual','resucitador_manual','ecografo',
              'humidificadores','monitor_multiparametrico']
 
-# Function: New features indicating relevant items and if "anio_inicio_contrato" is 2020 or 2019
+# Función: Nuevo campo indicando cuales son los ítems relevantes y otro indicando si "anio_inicio_contrato" es 2020 o 2019
 
 def proveedor_item(item, lista_codigos):
     
@@ -106,11 +103,11 @@ def proveedor_item(item, lista_codigos):
     
     return contracs_items_provider_acotado
 
-# Load csv contracs_item_provider_limpio
+# Cargar csv contracs_item_provider_limpio
 path=''
 contracs_item_provider_limpio=pd.read_csv(path)
 
-# Fill dic "resultados": Item, num of before emergency providers, num of emergency providers
+# Completar dic "resultados": Item, numero de proveedores pre emergencia, numero de proveedores en emergencia
 
 for i,j in zip(nombre_items,lista_items):
     resultados['item'].append(i)
@@ -127,7 +124,7 @@ for i,j in zip(nombre_items,lista_items):
         
 items_proveedores_1920=pd.DataFrame.from_dict(resultados)
 
-# Save csv
+# Serializar datos
 output_path=''
 
 items_proveedores_1920.to_excel(output_path, index=False, sep=',', encoding='utf-8')
