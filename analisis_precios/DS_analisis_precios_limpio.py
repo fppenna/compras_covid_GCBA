@@ -3,12 +3,12 @@ pd.options.display.float_format = '{:.2f}'.format
 
 
 
-# function: date parse
+# Función: parseo de fechas
 def formato_fechas(serie):
     return pd.to_datetime(serie, format='%Y-%m-%dT%H:%M:%S-03:00')
 
 
-# function: set prices in ARS
+# Función: conversión de precios en USD a ARS
 def precios_pesos_cde(ds):
     ds['tipo_cambio'] = ds['tipo_cambio'].str.replace(',', '.').astype(float)
 
@@ -18,7 +18,7 @@ def precios_pesos_cde(ds):
     return ds
 
 
-# relevant columns list
+# Lista con columnas relevantes
 lista_columnas_interes = ['ocid', 'id', 'contracts/0/id', 'contracts/0/awardID',
                           'contracts/0/title', 'contracts/0/description', 'contracts/0/status',
                           'contracts/0/period/startDate', 'contracts/0/period/endDate',
@@ -41,13 +41,13 @@ path_contratacion_directa_emergencia_mar_jul = ''
 contracs_items = pd.read_csv(path_gcba_contracs_items_jul)
 contratacion_directa_emergencia = pd.read_csv(path_contratacion_directa_emergencia_mar_jul)
 
-# Ds filter
+# Filtrar el DF con las columnas relevantes
 contracs_items['contracts/0/dateSigned'] = formato_fechas(contracs_items['contracts/0/dateSigned'])
 contracs_items['contracts/0/period/startDate'] = formato_fechas(contracs_items['contracts/0/period/startDate'])
 contracs_items['contracts/0/period/endDate'] = formato_fechas(contracs_items['contracts/0/period/endDate'])
 contracs_items = contracs_items[lista_columnas_interes]
 
-# DS filter
+# Filtrar el DF con los registros que interesan para el análisis
 contratacion_directa_emergencia = contratacion_directa_emergencia[
     (contratacion_directa_emergencia['estado_contratacion'] != 'rescindido') &
     (contratacion_directa_emergencia['estado_contratacion'] != 'Rescindida') &
@@ -56,7 +56,7 @@ contratacion_directa_emergencia = contratacion_directa_emergencia[
 
 contratacion_directa_emergencia = precios_pesos_cde(contratacion_directa_emergencia)
 
-# save csv files
+# Serializar csv
 output_path_contratacion_directa_emergencia = ''
 output_path_contracs_items = ''
 
