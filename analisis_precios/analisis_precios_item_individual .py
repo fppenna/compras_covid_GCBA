@@ -3,14 +3,14 @@ import requests
 import urllib.parse
 
 
-# Function: Select relevant items from before emergency DF
+# Función: Seleccion de ítems relevantes del DF pre emergencia
 
 def item_pre_emergencia(lista_item):
     return contracs_items_pre_emergencia[
         contracs_items_pre_emergencia['contracts/0/items/0/classification/id'].isin(lista_item)].reset_index(drop=True)
 
 
-# Function: new additional features and merge with IPC
+# Función: Nuevos campos y merg con datos de IPC
 
 def merge_ipc(df):
     df['anio_mes'] = pd.to_datetime(
@@ -28,7 +28,7 @@ def merge_ipc(df):
     return df
 
 
-# Function: Merge df with monthly avg TCN
+# Función: Merge del df con datos de tipo de cambio nominal promedio mensual
 
 def merge_tcn(df):
     df = pd.merge(df, tc_prom_peso_dolar, how='left', on='anio_mes')
@@ -38,7 +38,7 @@ def merge_tcn(df):
     return df
 
 
-# Function: Select relevant columns from before emergency df
+# Función: Seleccionar columnas relevantes del DF pre emergencia
 
 def columnas_interes(df):
     df = df[['tipo_procedimiento', 'contratacion', 'precio_unitario_actualizado_mayo20', 'precio_unitario_dolares']]
@@ -48,7 +48,7 @@ def columnas_interes(df):
     return df
 
 
-# Function: additional features
+# Función: Campos adicionales
 
 def procedimiento_contratacion(df):
     df['tipo_procedimiento'] = df['ocid'].str.extract('-([A-Z]+)\d+')[0]
@@ -58,15 +58,14 @@ def procedimiento_contratacion(df):
     return df
 
 
-# Funciones emergencia
-# Function: Select relevant items from emergency DF
+# Función: Selección de ítems relevantes del DF de emergencia
 
 def item_pos_emergencia(lista_item):
     return contracs_items_emergencia[
         contracs_items_emergencia['contracts/0/items/0/classification/id'].isin(lista_item)].reset_index(drop=True)
 
 
-# Function: Select relevant columns from emergency df
+# Función: Selección de columnas relevantes del DF de emergencia
 
 def columnas_interes_emergencia(df):
     df = df[['tipo_procedimiento', 'contratacion', 'precio_unitario_actualizado_mayo20', 'precio_unitario_dolares']]
@@ -76,7 +75,7 @@ def columnas_interes_emergencia(df):
     return df
 
 
-# Function: Merge IPC with CDE
+# Función: Merge de IPC con DF de compra directa de emergencia
 
 def merge_ipc_28_8(df):
     df['anio_mes'] = pd.to_datetime(
@@ -90,7 +89,7 @@ def merge_ipc_28_8(df):
     return df
 
 
-# Function: Merge TCN with CDE
+# Función: Merge de datos de TCN con DF de compra directa de emergencia
 
 def merge_tcn_28_8(df):
     df = pd.merge(df, tc_prom_peso_dolar, how='left', on='anio_mes')
@@ -100,7 +99,7 @@ def merge_tcn_28_8(df):
     return df
 
 
-# Select relevant columns
+# Seleccionar columnas relevantes
 
 def columnas_interes_28_8(df):
     df = df[['precio_unitario_actualizado_mayo20', 'precio_unitario_dolares']]
@@ -111,7 +110,7 @@ def columnas_interes_28_8(df):
     return df
 
 
-# function: call API argentinian consumer's price index(cpi)
+# Función: llamado a la API del Indice de Precios al Consumidor de Argentina
 
 def get_api_call(ids, **kwargs):
     API_BASE_URL = "https://apis.datos.gob.ar/series/api/"
@@ -119,7 +118,7 @@ def get_api_call(ids, **kwargs):
     return "{}{}?{}".format(API_BASE_URL, "series", urllib.parse.urlencode(kwargs))
 
 
-# List of SKU code (catalog code) of item
+# Lista de códigos de catálogo de interes para proceder con el análisis de precios (completar la lista "item")
 item = ['']
 
 # Create df with cpi
@@ -128,14 +127,14 @@ ipc = pd.read_csv(get_api_call(
     format="csv", start_date=2018
 ))
 
-# empty list
+# Lista vacía
 variacion_mayo_2020 = []
 
-# get cpi variation
+# Calculo de la variación del Indice de Precios al Consumidor
 for i in ipc['ipc_nivel_general_nacional']:
     variacion_mayo_2020.append((ipc['ipc_nivel_general_nacional'].iloc[-1] / i) - 1)
 
-# adding features to ipc df
+# Agregar nuevos campos al DF de IPC
 ipc['variación_mayo_2020'] = pd.Series(variacion_mayo_2020)
 ipc['anio'] = pd.to_datetime(ipc['indice_tiempo']).apply(lambda x: x.year)
 ipc['mes'] = pd.to_datetime(ipc['indice_tiempo']).apply(lambda x: x.month)
@@ -151,42 +150,42 @@ contracs_items = pd.read_csv(imput_path_contracs_items)
 contratacion_directa_emergencia = pd.read_csv(imput_path_contratacion_directa_emergencia)
 tcv_peso_dolar = pd.read_csv(imput_path_tcv_peso_dolar)
 
-# Creating new feature
+# Creación de nuevos campos
 tcv_peso_dolar['anio_mes'] = pd.to_datetime(tcv_peso_dolar['Fecha']).apply(lambda x: x.year).astype(
     str) + '-' + pd.to_datetime(tcv_peso_dolar['Fecha']).apply(lambda x: x.month).astype(str)
 
-# Creating avg TCN
+# Creación del TCN promedio
 tc_prom_peso_dolar = tcv_peso_dolar.groupby('anio_mes').mean().reset_index().sort_values('anio_mes')
 
-# Selecting before emergency period
+# Selección del período pre emergencia
 contracs_items_pre_emergencia = contracs_items[(contracs_items['contracts/0/dateSigned'] >= '2018-03-01') & (
             contracs_items['contracts/0/dateSigned'] < '2020-03-01')].reset_index(drop=True)
 
-# Selecting emergency period
+# Selección del período emergencia
 contracs_items_emergencia = contracs_items[(contracs_items['contracts/0/dateSigned'] >= '2020-03-01')].reset_index(
     drop=True)
 
-# Filtering CDE ds using "item"
+# Filtro del dataset compra directa en emergencia usando el nombre del item
 contratacion_directa_emergencia = contratacion_directa_emergencia[
     (contratacion_directa_emergencia['item'] == '')].reset_index(drop=True)
 
-# Transforming before emergency ds (with indicated items (sku))
+# Transformación del DF pre emergencia con los códigos indicados en la lista item
 df_pre_emergencia = columnas_interes(procedimiento_contratacion(merge_tcn(merge_ipc(item_pre_emergencia(item)))))
 
-# Transforming emergency ds
+# Transformación del DF de emergencia
 df_28_8_emergencia = columnas_interes_28_8(merge_tcn_28_8(merge_ipc_28_8(contratacion_directa_emergencia)))
 
 df_BAC_emergencia = columnas_interes(procedimiento_contratacion(merge_tcn(merge_ipc(item_pos_emergencia(item)))))
 
 df_emergencia = pd.concat([df_BAC_emergencia, df_28_8_emergencia]).reset_index(drop=True)
 
-# Add feature
+# Agregar un campo
 df_emergencia['emergencia'] = 'emergencia'
 
-# Concat before emergency and emergency DF
+# Concatenar los DF de ambos períodos
 df_total = pd.concat([df_emergencia, df_pre_emergencia]).reset_index(drop=True)
 
-# Save csv
+# Serializar csv
 output_path = ''
 
 df_total.to_csv(output_path, index=False, sep=',', encoding='utf-8')
