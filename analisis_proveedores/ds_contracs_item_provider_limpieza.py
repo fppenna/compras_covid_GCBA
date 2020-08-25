@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
 import pandas as pd
 import numpy as np
 
-# Function: create new features in pd DF
+# Función: crear nuevos campos en DataFrame
 
 def limpieza_ds_contracs_provider(ds):
     
@@ -38,12 +35,12 @@ input_path='contracs_items_provider.csv'
 
 output_path=''
 
-# Load CSV
+# Cargar CSV
 contracs_items_provider=pd.read_csv(input_path)
 
-# Use function
+# Usar función anteriormente creada
 contracs_item_provider_limpio=limpieza_ds_contracs_provider(contracs_items_provider)
 
-# Save csv
+# Serializar datos
 contracs_item_provider_limpio.to_csv(output_path, index=False, sep=',', encoding='utf-8')
 
