@@ -8,7 +8,7 @@ input_path=''
 df_total=pd.read_csv(input_path)
 data=df_total.copy()
 
-# Price distribution box plot
+# Gráfico de caja con datos de series de precios
 x_label='Período'
 y_label='Precio unitario en pesos corrientes'
 sns.set(style="ticks", palette="pastel", rc={'figure.figsize':(8,8)})
@@ -18,7 +18,7 @@ plt.xlabel(x_label, fontsize=15)
 plt.ylabel(y_label, fontsize=15)
 sns.despine(offset=10, trim=True)
 
-# Price distribution & procurement method
+# Gráfico con distribución de precios y procurement method
 sns.catplot(x='emergencia', y='precio_unitario_actualizado_mayo20', data=data, hue='tipo_procedimiento',
             palette="husl",
             kind="swarm",height=7, s=10)
@@ -26,7 +26,7 @@ plt.xlabel('Período', fontsize=15)
 plt.ylabel('Precio unitario en pesos corrientes', fontsize=15)
 sns.despine(offset=10, trim=True)
 
-# Price distribution & type of contrac
+# Gráfico con distribución de precios y tipo de contrato
 sns.catplot(x='emergencia', y='precio_unitario_actualizado_mayo20', data=data,hue='contratacion',
             palette="husl",
             kind="swarm",height=7, s=10)
