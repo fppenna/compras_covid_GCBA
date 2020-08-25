@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import pandas as pd
 import numpy as np
 import datetime
@@ -16,10 +13,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 
 
-# In[ ]:
-
-
-## Function: Correct wrong characters
+# Func. para corregir caracteres incorrectos
 
 def limpieza_ds_bo(ds):
     ds['sancion'] = pd.to_datetime(ds['sancion'].str.replace('Sanción:\n', ''), format='%d/%m/%Y', errors='coerce')
@@ -39,10 +33,7 @@ def limpieza_ds_bo(ds):
     return ds
 
 
-# In[ ]:
-
-
-# Create BO URL list
+# Crear lista de URL del Boletin Oficial
 
 url_BO = 'https://boletinoficial.buenosaires.gob.ar/normativaba/norma/'
 
@@ -59,8 +50,6 @@ list_url_BO = []
 for i in id_BO:
     list_url_BO.append(url_BO + i)
 
-# In[ ]:
-
 
 # Chromedriver settings
 
@@ -76,10 +65,7 @@ chrome_driver_path = ''
 
 browser = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=option)
 
-# In[ ]:
-
-
-# Empty lists to fill while scraping
+# Listas vacías para completar con  scraping
 URL = []
 titulo = []
 sintesis = []
@@ -152,7 +138,7 @@ for i in list_url_BO:
         organismo.append('no funciona -> ' + i)
         texto.append('no funciona -> ' + i)
 
-# Create DataFrame using filled lists
+# Creación del DataFrame usando listas completas
 
 boletin_oficial = pd.DataFrame()
 boletin_oficial['URL'] = pd.Series(URL)
@@ -163,17 +149,9 @@ boletin_oficial['fecha_publicacion'] = pd.Series(fecha_publicacion)
 boletin_oficial['organismo'] = pd.Series(organismo)
 boletin_oficial['texto'] = pd.Series(texto)
 
-# In[ ]:
-
-
-## Correct wrong characters
+# Corregir caracteres incorrectos
 ds_boletin_oficial = limpieza_ds_bo(boletin_oficial)
 
-# In[ ]:
-
-
-# Save csv
+# Serializar datos
 csv_path = ''
 ds_boletin_oficial.to_csv(csv_path, index=False, sep=',', encoding='utf-8')
-
-# In[ ]:
